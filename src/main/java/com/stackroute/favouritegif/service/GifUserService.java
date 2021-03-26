@@ -23,24 +23,27 @@ public class GifUserService {
         }
         else{
             Optional<GifUser> tempUser = gifUserRepository.findById(gifUser.getUserId());
-            return tempUser.get().getGifIds();
+            return tempUser.get().getGifId();
         }
     }
+    public GifUser addNewUser(GifUser gifUser){
 
-    public boolean addFavourite(String userId, String gifId){
-        if(gifUserRepository.findById(userId).isEmpty()){
-            return false;
-        }
-        else{
-            Optional <GifUser> userClass = gifUserRepository.findById(userId);
+
+            gifUserRepository.save(gifUser);
+            return gifUser;
+
+    }
+
+    public boolean addFavourite(GifUser user){
+
+
+            Optional <GifUser> userClass = gifUserRepository.findById(user.getUserId());
             List<String> giflist = new ArrayList<>();
-            giflist = userClass.get().getGifIds();
-            giflist.add(gifId);
-            GifUser userInsert = new GifUser(userId,giflist);
-            if(gifUserRepository.insert(userInsert)==null){
-                return false;
-            }
+            giflist = userClass.get().getGifId();
+            giflist.addAll(user.getGifId());
+            GifUser userInsert = new GifUser(user.getUserId(),giflist);
+            GifUser checkUser =  gifUserRepository.save(userInsert);
             return true;
-        }
+
     }
 }

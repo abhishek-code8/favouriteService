@@ -32,7 +32,7 @@ public class GifUser {
 		this.userId = userId;
 	}
 
-	public List<String> getGifIds() {
+	public List<String> getGifId() {
 		return gifId;
 	}
 
