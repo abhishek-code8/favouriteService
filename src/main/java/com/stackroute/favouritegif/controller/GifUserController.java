@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("api/v1/gifs")
 public class GifUserController {
@@ -22,9 +23,9 @@ public class GifUserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getAllGifs(@PathVariable GifUser gifUser){
+    public ResponseEntity<?> getAllGifs(@PathVariable String userId){
         try{
-            List<String> gifList = gifUserService.userFavourites(gifUser);
+            List<String> gifList = gifUserService.userFavourites(userId);
             return new ResponseEntity<>(gifList,HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>("User Not Found", HttpStatus.NOT_FOUND);
@@ -44,15 +45,5 @@ public class GifUserController {
             return new ResponseEntity<>("Not added",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PostMapping("/adduser")
-    public ResponseEntity<?> addUser(@RequestBody GifUser user){
-        GifUser tempUser = gifUserService.addNewUser(user);
-        if(tempUser==null){
-            return new ResponseEntity<>("Already there", HttpStatus.CONFLICT);
-        }
-        else{
-            return new ResponseEntity<>(user,HttpStatus.CREATED);
-        }
 
-    }
 }
